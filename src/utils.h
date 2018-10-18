@@ -43,6 +43,7 @@ QString orgBluezDevice1();
 QString orgBluezInput1();
 QString orgBluezMedia1();
 QString orgBluezMediaPlayer1();
+QString orgBluezMediaControl1();
 QString orgBluezAgentManager1();
 QString orgBluezProfileManager1();
 QString orgBluezObex();

@@ -76,6 +76,7 @@ public:
     QString m_modalias;
     InputPtr m_input;
     MediaPlayerPtr m_mediaPlayer;
+    MediaControlPtr m_mediaControl;
     AdapterPtr m_adapter;
 };
 

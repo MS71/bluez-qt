@@ -27,6 +27,8 @@
 #include "input_p.h"
 #include "mediaplayer.h"
 #include "mediaplayer_p.h"
+#include "mediacontrol.h"
+#include "mediacontrol_p.h"
 #include "utils.h"
 #include "macros.h"
 
@@ -95,6 +97,11 @@ void DevicePrivate::interfacesAdded(const QString &path, const QVariantMapMap &i
             m_mediaPlayer->d->q = m_mediaPlayer.toWeakRef();
             Q_EMIT q.data()->mediaPlayerChanged(m_mediaPlayer);
             changed = true;
+        } else if (it.key() == Strings::orgBluezMediaControl1()) {
+            m_mediaControl = MediaControlPtr(new MediaControl(path, it.value()));
+            m_mediaControl->d->q = m_mediaControl.toWeakRef();
+            Q_EMIT q.data()->mediaControlChanged(m_mediaControl);
+            changed = true;
         }
     }
 
@@ -117,6 +124,10 @@ void DevicePrivate::interfacesRemoved(const QString &path, const QStringList &in
             m_mediaPlayer.clear();
             Q_EMIT q.data()->mediaPlayerChanged(m_mediaPlayer);
             changed = true;
+        } else if (interface == Strings::orgBluezMediaControl1()) {
+            m_mediaControl.clear();
+            Q_EMIT q.data()->mediaControlChanged(m_mediaControl);
+            changed = true;
         }
     }
 
@@ -136,6 +147,8 @@ void DevicePrivate::propertiesChanged(const QString &interface, const QVariantMa
         m_input->d->propertiesChanged(interface, changed, invalidated);
     } else if (interface == Strings::orgBluezMediaPlayer1() && m_mediaPlayer) {
         m_mediaPlayer->d->propertiesChanged(interface, changed, invalidated);
+    } else if (interface == Strings::orgBluezMediaControl1() && m_mediaControl) {
+        m_mediaControl->d->propertiesChanged(interface, changed, invalidated);
     } else if (interface != Strings::orgBluezDevice1()) {
         return;
     }
